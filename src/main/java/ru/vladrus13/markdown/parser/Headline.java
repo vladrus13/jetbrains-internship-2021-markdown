@@ -1,21 +1,54 @@
 package ru.vladrus13.markdown.parser;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
+/**
+ * One header line class
+ */
 public class Headline {
+    /**
+     * Level of this header
+     */
     public final int level;
+    /**
+     * Name (or head) of this header
+     */
     public String name;
+    /**
+     * Childes of this header
+     */
     public final ArrayList<Headline> childes = new ArrayList<>();
-    private final static Set<String> childesNames = new HashSet<>();
+    /**
+     * Names of classes. Usage on equals names of header
+     */
+    private final static Set<String> names = new HashSet<>();
 
+    /**
+     * Constructor of class header
+     *
+     * @param level level of header
+     */
     public Headline(int level) {
         this.level = level;
     }
 
+    /**
+     * Add a child to header
+     *
+     * @param headline new child
+     */
     public void add(Headline headline) {
         childes.add(headline);
     }
 
+    /**
+     * Set name (Builder pattern)
+     *
+     * @param name name of class
+     * @return this class
+     */
     public Headline setName(String name) {
         this.name = name;
         return this;
@@ -35,23 +68,28 @@ public class Headline {
                 .toLowerCase();
     }
 
+    /**
+     * Convert header to StringBuilder view
+     *
+     * @return result
+     */
     public StringBuilder toStringBuilder() {
         StringBuilder returned = new StringBuilder();
         for (int i = 0; i < childes.size(); i++) {
             Headline headline = childes.get(i);
             String name = null;
-            if (!childesNames.contains(linkName(headline.name))) {
+            if (!names.contains(linkName(headline.name))) {
                 name = linkName(headline.name);
             } else {
                 int current = 1;
                 while (name == null) {
-                    if (!childesNames.contains(linkName(headline.name + "-" + current))) {
+                    if (!names.contains(linkName(headline.name + "-" + current))) {
                         name = linkName(headline.name + "-" + current);
                     }
                     current++;
                 }
             }
-            childesNames.add(name);
+            names.add(name);
             returned
                     .append("\t".repeat(level))
                     .append(i + 1)
