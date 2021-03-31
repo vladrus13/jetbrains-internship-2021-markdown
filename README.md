@@ -54,3 +54,5 @@ content
 ```
 mvn package exec:java -Dexec.args=src/main/resources/input.md
 ```
+
+На вывод в таком случае попадет ровно то, что было желаемо в тестовом примере
